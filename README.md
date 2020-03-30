@@ -108,7 +108,7 @@ Die die Plattformen öffentlich sind, sollte man nie eine Malware hochladen, den
 
 $ sha256sum *
 
-Die folgende Liste sind die gefundenen SHA256-Hashes, die jeweils auf die Virustotal Seite verlinkt sind.
+Die folgende Liste sind die gefundenen SHA256-Hashes, die jeweils auf der Virustotal Seite geprüft werden können.
 
 d5e0e8694ddc0548d8e6b87c83d50f4ab85c1debadb106d6a6a794c3e746f4fa    b.wnry
 
