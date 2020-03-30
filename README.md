@@ -1,6 +1,6 @@
-++++++++++++++++++++++++++++++
+------------------------------
 Szenario:
-++++++++++++++++++++++++++++++
+------------------------------
 
 Die virtuellen Maschinen sind ein Windows Server 2012R2, welches mit dem Ransomware Virus WannaCry infiziert werden soll und später zur dynamischen Analyse genutzt wird, sowie ein Linux-Ubuntu System, welches zur statischen Analyse genutzt wird.
 
@@ -23,9 +23,9 @@ Passwort: mmssec
 Es ist eine spezifische Bewerbungs-Mail mit Anhang, die völlig unverdächtig wirkt.
 Der Anhang der Mail "Application & CV.pdf" kann nun heruntergeladen werden. Die Mail kann nun wieder geschlossen werden.
 
-------------------------------
+++++++++++++++++++++++++++++++
 MALWARE AUSFÜHREN
-------------------------------
+++++++++++++++++++++++++++++++
 
 Mit dem Ausführen der Anhangsdatei startet die Malware und damit die Verschlüsselung der Daten. Es erscheint in regelmäßigen Abständen ein Popup Fenster
 
@@ -34,9 +34,9 @@ Um die Verschlüsselung zu verfizieren, können die Dokumente zum Thema Forensik
 An dieser Stelle würde nun ein Abbild des Speichers zur späteren Analyse erzeugt werden.
 
 
-++++++++++++++++++++++++++++++
+------------------------------
 STATISCHE ANALYSE (Ubuntu VM)
-++++++++++++++++++++++++++++++
+------------------------------
 
 In der statischen Analyse werden Informationen über die Malware gesammelt, ohne diese auszuführen.
 Als erstes wird sie mit binwalk untersucht, um eingebettete Dateien zu finden.
@@ -50,9 +50,9 @@ $ binwalk Application\ \&\ CV.exe
 
 Es findet Zip-komprimierte Daten in der Portable Executable (PE).
 
----------------------------
+++++++++++++++++++++++++++++++
 ZIP entpacken
----------------------------
+++++++++++++++++++++++++++++++
 
 Jetzt versuchen wir, diese ZIP komprimierten Daten zu entpacken.
 
@@ -62,9 +62,9 @@ Dies führt zu einer Eingabeaufforderung, die nach einem Passwort für die ZIP D
 
 Da wir aber annehmen, dass die Malware die ZIP entpackt, wenn sie ausgeführt wird, können wir davon ausgehen, dass sie das Passwort enthält.
 
----------------------------
+++++++++++++++++++++++++++++++
 Passwort finden
----------------------------
+++++++++++++++++++++++++++++++
 
 Dazu haben wir ein Skript geschrieben, welches alle Zeichenketten aus der Datei ausliest, und diese dann als Passwort testet.
 
@@ -95,11 +95,11 @@ c.wnry Text     URLs zu TOR HiddenServices
 r.wnry Text     WannaCry FAQ
 S.wnry ZIP-File ZIP-Archiv mit TOR-Installation
 t.wnry Binary   Verschlüsselte DLL für Verschlüsselungsfunktionen
-u.wnry PE	    Decryptor Tool
+u.wnry PE	Decryptor Tool
 
----------------------------
+++++++++++++++++++++++++++++++
 Prüfsumme & Virustotal
----------------------------
+++++++++++++++++++++++++++++++
 
 Malware Plattformen nutzen in der Regel Dateihashes zur Identifikation, virustotal.com unterstützt beispielsweise MD5, SHA1 and SHA256.
 
@@ -129,16 +129,16 @@ ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa    Application 
 b9c5d4339809e0ad9a00d4d3dd26fdf44a32819a54abf846bb9b560d81391c25    u.wnry
 	
 
-+++++++++++++++++++++++++++++
-Dynamische Analyse
-+++++++++++++++++++++++++++++
+------------------------------
+Dynamische Analyse (Windows VM)
+------------------------------
 
 Als erstes muss der Ordner Dynamic Analysis geöffnet werden und das Tool procmon gestartet werden.
 Akzeptieren Sie dazu die Nutzungsbesdingungen beim ersten Start des Programms.
 	
------------------------------
+++++++++++++++++++++++++++++++
 Filterliste bestätigen
------------------------------
+++++++++++++++++++++++++++++++
 
 Um den Überblick nicht zu verlieren, werden die aufgezeichneten Daten gefiltert. Dieser Filter wurde bereits vorkonfiguriert und liegt im WCry Ordner bereit. Um den Filter einzubinden, klicken Sie im Procmon auf 
 
@@ -151,9 +151,9 @@ Filter --> Load Filter
 
 ausgewählt werden.
 
------------------------------
+++++++++++++++++++++++++++++++
 Malware ausführen
------------------------------
+++++++++++++++++++++++++++++++
 
 Nun muss Application & CV.exe im Ordner Dynamic Analysis ausgeführt werden, direkt danach sollte wieder zu Procmon gewechselt werden.
 
@@ -163,25 +163,25 @@ Ziemlich zu Beginn ist zu sehen, dass die Malware einen Eintrag in der Registry 
 
 Danach entpackt die Malware offenbar das von uns bereits gefundene ZIP-Archiv.
 	
-----------------------------
+++++++++++++++++++++++++++++++
 Verschlüsselung beobachten
-----------------------------
+++++++++++++++++++++++++++++++
 
 Wenn man weiter scrollt sieht man, dass die Dateien in unserem präparierten Dokumente Ordner geöffnet werden, und dazu Dateien erstellt werden, mit der Endung .WNCRYT
 
 Offenbar werden hier die vorhandenen Dateien verschlüsselt und dann überschrieben.
 
-----------------------------
+++++++++++++++++++++++++++++++
 Autostart
-----------------------------
+++++++++++++++++++++++++++++++
 
 Nach einem Klick in in der oberen Leiste auf das Dateisymbol werden die Dateioperationen ausgeblendet, nun ist die Liste wesentlich kürzer.
 
 So kann man nachvollziehen, dass durch einen Registry Eintrag die Malware in den Autostart eingefügt wurde.
 	
-----------------------------
+++++++++++++++++++++++++++++++
 Auswertung
-----------------------------
+++++++++++++++++++++++++++++++
 
 Die beiden gefundenen Registry Einträge:
 
@@ -191,9 +191,9 @@ HKU\S-1-5-21-3463664321-2923530833-3546627382-1000\Software\Microsoft\Windows\Cu
 HKU\S-1-5-21-3463664321-2923530833-3546627382-1000\Software\WanaCrypt0r\wd: "C:\Users\IEUser\Desktop"
 
 
-+++++++++++++++++++++++++++
+------------------------------
 IOC Analyse (Windows VM)
-+++++++++++++++++++++++++++
+------------------------------
 Szenario
 
 Aus den Beobachtungen und Findings können wir nun Indicators of Compromise ableiten.
@@ -201,9 +201,9 @@ Aus den Beobachtungen und Findings können wir nun Indicators of Compromise able
 IOCs sind z.B. Dateihashes, Registry Einträge oder Metainformationen, aus denen man schließen kann, dass ein System kompromittiert wurde. Mit diesen können automatisiert weitere Systeme untersucht werden, um infizierte Geräte zu erkennen.
 	
 
--------------------------- 
+++++++++++++++++++++++++++++++ 
 IOCs ableiten
---------------------------
+++++++++++++++++++++++++++++++
 
 Aus unserer Untersuchung können wir bspw. folgende IOCs nutzen:
 
@@ -229,9 +229,9 @@ Angelegte Registry Keys:
 
 	
 
-+++++++++++++++++++++++++ 
+------------------------------ 
 YARA
-+++++++++++++++++++++++++
+------------------------------
 
 YARA durchsucht Dateien nach bestimmten Pattern, die man in YARA-Rules beschreiben kann. Wir können nun also eine Yara Rule für unsere Malware schreiben, und mit dieser in unserem gesamten Netzwerk nach weiteren, infizierten Rechnern durchsuchen.
 
@@ -279,9 +279,9 @@ rule wannaCry {
 Dies ist bspw. eine mögliche Regel. Es gibt zwei Blöcke innerhalb der Regel: Im Block "Strings" werden Zeichenketten definiert, nach denen eine Datei durchsucht wird. Im "Condition" Block werden dann Bedingungen festgelegt, bei denen die Regel "anschlagen" soll. In diesem Fall passiert dies, wenn das Passwort vorkommt, oder mindestens 6 der extrahierten Dateinamen oder der MD5-Hash der Datei übereinstimmt.
 	
 
--------------------------------
+++++++++++++++++++++++++++++++
 Yara Regel nutzen
--------------------------------
+++++++++++++++++++++++++++++++
 Die Yara Regel ist als rule.txt im persönlichen Ordner hinterlegt, in der Kommandozeile muss auf den Desktop gewechselt werden
 
 cd Desktop
@@ -290,4 +290,4 @@ yara64.exe -r .\WCry\rule.txt .
 
 Mit diesem Kommando wird yara mit der von uns definierten Regel gestartet, und durchsucht rekursiv unseren Desktop. Dabei wird jede Datei analysiert. Das Ergebnis ist, dass die Regel wannaCry auf der Datei \Dynamic Analysis\Application & CV.pdf.exe angeschlagen hat.
 
-Das ist keine Überraschung, allerdings besteht die Stärke darin, dass nun Dateien auf allen Computern im System auf diese Regel gescannt werden können, unabhängig vom Betriebssystem.
+Das ist keine Überraschung, allerdings besteht die Stärke darin, dass nun Dateien auf allen Computern im System auf diese Regel gescannt werden können, unabhängig vom Betriebssystem.	
