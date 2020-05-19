@@ -8,12 +8,13 @@ Auf dem Desktop befindet sich jeweils ein Ordner "WCry", in dem sich alle Dateie
 
 
 In dem Ordner auf dem Windows Desktop befinden sich eine Email mit Anhang, ein paar Dokumente, eine Kurzanleitung namens README, sowie drei Dateien, die später zur dynamischen Analyse genutzt werden.
+Im Ornder unter Linux befindet zum einen ein Ornder mit der Malware und einem vorgeschriebenen Skript zum finden von Passwörtern und außerdem ein backup Ordner.
 
+
+------------------------------
+START (Windows VM)
+------------------------------
 In diesem Teil des Showcase wird der Anhang der Phishing Mail heruntergeladen und geöffnet, welcher sich als Malware entpuppt und alle Dokumente verschlüsselt. Dies kann anhand der Dokumente im Ordner Documents verfiziert werden.
-
-------------------------------
-START
-------------------------------
 
 Öffnen Sie die Mail-Datei "Bewerbung" mit dem Mail-Programm Thunderbird und melden Sie sich an mit:
 mmssec@gmx.de
