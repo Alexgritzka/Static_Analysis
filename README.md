@@ -97,10 +97,15 @@ $ sudo file *.wnry
 Die Anmerkungen dazu kann man teilweise leicht erschließen, teilweise sind sie aus einem Factsheet übernommen.
 
 b.wnry Bitmap   Hintergrundbild mit Anleitung
+
 c.wnry Text     URLs zu TOR HiddenServices
+
 r.wnry Text     WannaCry FAQ
+
 S.wnry ZIP-File ZIP-Archiv mit TOR-Installation
+
 t.wnry Binary   Verschlüsselte DLL für Verschlüsselungsfunktionen
+
 u.wnry PE	Decryptor Tool
 
 ++++++++++++++++++++++++++++++
