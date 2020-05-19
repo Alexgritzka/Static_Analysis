@@ -9,7 +9,7 @@ Auf dem Desktop befindet sich jeweils ein Ordner "WCry", in dem sich alle Dateie
 
 In dem Ordner auf dem Windows Desktop befinden sich eine Email mit Anhang, ein paar Dokumente, eine Kurzanleitung namens README, sowie drei Dateien, die später zur dynamischen Analyse genutzt werden.
 
-In diesem Teil des Showcases wird der Anhang der Phishing Mail heruntergeladen und geöffnet, welcher sich als Malware entpuppt und alle Dokumente verschlüsselt. Dies kann anhand der Dokumente im Ordner Documents verfiziert werden.
+In diesem Teil des Showcase wird der Anhang der Phishing Mail heruntergeladen und geöffnet, welcher sich als Malware entpuppt und alle Dokumente verschlüsselt. Dies kann anhand der Dokumente im Ordner Documents verfiziert werden.
 
 ------------------------------
 START
@@ -27,7 +27,7 @@ Der Anhang der Mail "Application & CV.pdf" kann nun heruntergeladen werden. Die 
 MALWARE AUSFÜHREN
 ++++++++++++++++++++++++++++++
 
-Mit dem Ausführen der Anhangsdatei startet die Malware und damit die Verschlüsselung der Daten. Es erscheint in regelmäßigen Abständen ein Popup Fenster
+Mit dem Ausführen der Anhangsdatei startet die Malware und damit die Verschlüsselung der Daten. Es erscheint in regelmäßigen Abständen ein Popup Fenster.
 
 Um die Verschlüsselung zu verfizieren, können die Dokumente zum Thema Forensik geöffnet werden. Dabei kommt es nun zu einem Fehler.
 
@@ -44,7 +44,7 @@ Als erstes wird sie mit binwalk untersucht, um eingebettete Dateien zu finden.
 Wechseln Sie in den Ordner Analysis, wo die Datei Application & CV.exe abgelegt ist.
 Öffnen Sie in diesem Ordner ein Terminal.
 
-Das Tool binwalk untersucht Binärdateien nach eingebetteten Dateitypen und ausführbarem Code.
+Das Tool binwalk untersucht Binärdateien nach eingebetteten Dateitypen und ausführbarem Code:
 
 $ binwalk Application\ \&\ CV.exe
 
@@ -54,11 +54,11 @@ Es findet Zip-komprimierte Daten in der Portable Executable (PE).
 ZIP entpacken
 ++++++++++++++++++++++++++++++
 
-Jetzt versuchen wir, diese ZIP komprimierten Daten zu entpacken.
+Jetzt versuchen wir, diese ZIP komprimierten Daten zu entpacken:
 
-$ unzip Application\ \&\ CV.exe
+$ sudo unzip Application\ \&\ CV.exe
 
-Dies führt zu einer Eingabeaufforderung, die nach einem Passwort für die ZIP Datei fragt. Leider kennen wir es nicht.
+Dies führt zu einer Eingabeaufforderung, die nach einem Passwort für die ZIP Datei fragt. Noch ist das Passwort nicht bekannt.
 
 Da wir aber annehmen, dass die Malware die ZIP entpackt, wenn sie ausgeführt wird, können wir davon ausgehen, dass sie das Passwort enthält.
 
@@ -72,21 +72,25 @@ Zum Auslesen der Strings wird das Unix Tool "strings" verwendet. Dieses sucht na
 
 $ ./findPassword.sh Application\ \&\ CV.exe
 
+Output:
 Correct Password is WNcry@2ol7
 
-Unser Skript findet das Passwort WNcry@2ol7. Mit diesem können wir die ZIP-Datei nun entpacken:
+Unser Skript findet das Passwort WNcry@2ol7. Mit diesem können wir die ZIP-Datei nun entpacken. Achten Sie auf die Schreibweise!:
 
-$ unzip -P WNcry@2ol7 Application\ \&\ CV.exe
+$ sudo unzip -P WNcry@2ol7 Application\ \&\ CV.exe
 
 Sollte es beim Entpacken Probleme geben, liegt eine bereits entpackte Variante im Ordner ~/backup
 
 
 Dabei werden nur die in der Malware eingebetteten Dateien entschlüsselt. Diese Verschlüsselung hängt aber nicht mit der Dateiverschlüsselung zusammen, mit der die Daten des Opfers verschlüsselt werden.
+
+++++++++++++++++++++++++++++++
 Dateien untersuchen
+++++++++++++++++++++++++++++++
 
 Die entpackten Dateien werden nun untersucht, um die Dateitypen zu erkennen.
 
-$ file *.wnry
+$ sudo file *.wnry
 
 Die Anmerkungen dazu kann man teilweise leicht erschließen, teilweise sind sie aus einem Factsheet übernommen.
 
@@ -140,7 +144,7 @@ Akzeptieren Sie dazu die Nutzungsbesdingungen beim ersten Start des Programms.
 Filterliste bestätigen
 ++++++++++++++++++++++++++++++
 
-Um den Überblick nicht zu verlieren, werden die aufgezeichneten Daten gefiltert. Dieser Filter wurde bereits vorkonfiguriert und liegt im WCry Ordner bereit. Um den Filter einzubinden, klicken Sie im Procmon auf 
+Um den Überblick nicht zu verlieren, werden die aufgezeichneten Daten gefiltert. Dieser Filter wurde bereits vorkonfiguriert und liegt im WCry Ordner bereit. Um den Filter einzubinden, klicken Sie im Procmon auf:
 
 Filter --> Organize Filters... --> Import...
 
@@ -282,12 +286,13 @@ Dies ist bspw. eine mögliche Regel. Es gibt zwei Blöcke innerhalb der Regel: I
 ++++++++++++++++++++++++++++++
 Yara Regel nutzen
 ++++++++++++++++++++++++++++++
-Die Yara Regel ist als rule.txt im persönlichen Ordner hinterlegt, in der Kommandozeile muss auf den Desktop gewechselt werden
 
-cd Desktop
+Die Yara Regel ist als rule.txt im persönlichen Ordner hinterlegt, in der Kommandozeile muss auf den Desktop gewechselt werden:
 
-yara64.exe -r .\WCry\rule.txt .
+$ cd Desktop
 
-Mit diesem Kommando wird yara mit der von uns definierten Regel gestartet, und durchsucht rekursiv unseren Desktop. Dabei wird jede Datei analysiert. Das Ergebnis ist, dass die Regel wannaCry auf der Datei \Dynamic Analysis\Application & CV.pdf.exe angeschlagen hat.
+$ sudo yara64.exe -r .\WCry\rule.txt .
+
+Mit diesem Kommando wird yara mit der von uns definierten Regel gestartet, und durchsucht rekursiv Ihren Desktop. Dabei wird jede Datei analysiert. Das Ergebnis ist, dass die Regel WannaCry auf der Datei \Dynamic Analysis\Application & CV.pdf.exe und auf andere Dateien im WCry, die die gesuchten Strings beinhalten, angeschlagen hat.
 
 Das ist keine Überraschung, allerdings besteht die Stärke darin, dass nun Dateien auf allen Computern im System auf diese Regel gescannt werden können, unabhängig vom Betriebssystem.	
