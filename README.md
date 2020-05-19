@@ -8,7 +8,8 @@ Auf dem Desktop befindet sich jeweils ein Ordner "WCry", in dem sich alle Dateie
 
 
 In dem Ordner auf dem Windows Desktop befinden sich eine Email mit Anhang, ein paar Dokumente, eine Kurzanleitung namens README, sowie drei Dateien, die später zur dynamischen Analyse genutzt werden.
-Im Ornder unter Linux befindet zum einen ein Ornder mit der Malware und einem vorgeschriebenen Skript zum finden von Passwörtern und außerdem ein backup Ordner.
+
+Im Ornder unter Linux befindet sich zum einen ein Ornder mit der Malware und einem vorgeschriebenen Skript zum finden von Passwörtern und außerdem ein backup Ordner.
 
 
 ------------------------------
