@@ -1,4 +1,28 @@
 ------------------------------
+Vorbereitung:
+------------------------------
+1. VirtualBox und das VirtualBox Expansion Package installieren
+	https://www.virtualbox.org/wiki/Downloads
+
+2.  Vagrant installieren
+	https://www.vagrantup.com/downloads.html
+
+3. Vagrant File herunterladen unter:
+	"....."
+
+Das Showcase benötigt ca. 50 GB freien Speicher!
+
+Logins:
+In beiden VMs sind die Nutzer "Vagrant" mit Passwort "vagrant"
+
+Weitere Informationen:
+Bei der untersuchten Malware handelt es sich um die Ransomware WannaCry, ein ausführliches Factsheet findet man auf auf Github:
+	https://gist.github.com/rain-1/989428fa5504f378b993ee6efbc0b168
+	
+Das Sample stammt aus: https://github.com/ytisf/theZoo/tree/master/malwares/Binaries/Ransomware.WannaCry
+	
+
+------------------------------
 Szenario:
 ------------------------------
 
@@ -189,27 +213,25 @@ Autostart
 Nach einem Klick in in der oberen Leiste auf das Dateisymbol werden die Dateioperationen ausgeblendet, nun ist die Liste wesentlich kürzer.
 
 So kann man nachvollziehen, dass durch einen Registry Eintrag die Malware in den Autostart eingefügt wurde.
+"RegSetValue - HKLM\SOFTWARE\Wow6432Node\WanaCrypt0r\wd"
 	
 ++++++++++++++++++++++++++++++
 Auswertung
 ++++++++++++++++++++++++++++++
 
-Die beiden gefundenen Registry Einträge:
+Die beiden gefundenen Registry Einträge wurden gefunden:
 
-HKU\S-1-5-21-3463664321-2923530833-3546627382-1000\Software\Microsoft\Windows\CurrentVersion\Run\tkwnjpfsktmsg478:
-"C:\Users\IEUser\Desktop\tasksche.exe"
+reg.exe: RegSetValue - HKLM\SOFTWARE\Wow6432Node\WanaCrypt0r\wd
 
-HKU\S-1-5-21-3463664321-2923530833-3546627382-1000\Software\WanaCrypt0r\wd: "C:\Users\IEUser\Desktop"
-
+reg.exe: RegSetValue - HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run\hbdzmwskmerogm715 
 
 ------------------------------
 IOC Analyse (Windows VM)
 ------------------------------
-Szenario
 
 Aus den Beobachtungen und Findings können wir nun Indicators of Compromise ableiten.
 
-IOCs sind z.B. Dateihashes, Registry Einträge oder Metainformationen, aus denen man schließen kann, dass ein System kompromittiert wurde. Mit diesen können automatisiert weitere Systeme untersucht werden, um infizierte Geräte zu erkennen.
+IOCs sind z.B. Dateihashes, Strings, Registry Einträge oder Metainformationen, aus denen man schließen kann, dass ein System kompromittiert wurde. Mit diesen können automatisiert weitere Systeme untersucht werden, um infizierte Geräte zu erkennen.
 	
 
 ++++++++++++++++++++++++++++++ 
@@ -232,11 +254,6 @@ Strings in der PE:
     tasksche.exe
     taskse.exe
     taskdl.exe
-
-Angelegte Registry Keys:
-
-    HKU\S-1-5-21-3463664321-2923530833-3546627382-1000\Software\WanaCrypt0r\wd
-    HKU\S-1-5-21-3463664321-2923530833-3546627382-1000\Software\Microsoft\Windows\CurrentVersion\Run\tkwnjpfsktmsg478
 
 	
 
